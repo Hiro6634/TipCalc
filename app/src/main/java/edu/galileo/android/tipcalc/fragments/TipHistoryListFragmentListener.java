@@ -1,8 +1,11 @@
 package edu.galileo.android.tipcalc.fragments;
 
+import edu.galileo.android.tipcalc.models.TipRecord;
+
 /**
  * Created by Hiro on 17/06/2016.
  */
 public interface TipHistoryListFragmentListener {
-    void action(String str);
+    void addToList(TipRecord record);
+    void clearList();
 }
