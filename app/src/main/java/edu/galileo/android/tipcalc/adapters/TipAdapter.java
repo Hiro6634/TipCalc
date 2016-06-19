@@ -7,23 +7,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.galileo.android.tipcalc.R;
+import edu.galileo.android.tipcalc.fragments.OnItemClickListener;
 import edu.galileo.android.tipcalc.models.TipRecord;
 
 /**
  * Created by Hiro on 17/06/2016.
  */
 public class TipAdapter extends RecyclerView.Adapter<TipAdapter.ViewHolder> {
-    Context context;
-    List<TipRecord> dataset;
+    private Context context;
+    private List<TipRecord> dataset;
+    private OnItemClickListener onItemClickListener;
 
-    public TipAdapter(Context context, List<TipRecord> dataset){
+    public TipAdapter(Context context, List<TipRecord> dataset, OnItemClickListener onItemClickListener){
         this.dataset = dataset;
         this.context = context;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public TipAdapter(Context context, OnItemClickListener onItemClickListener){
+        this.dataset = new ArrayList<TipRecord>();
+        this.context = context;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -40,6 +50,7 @@ public class TipAdapter extends RecyclerView.Adapter<TipAdapter.ViewHolder> {
                                 context.getString(R.string.global_message_tip),
                                 element.getTip());
         holder.txtContent.setText(strTip);
+        holder.setOnItemClickListener(element, onItemClickListener);
     }
 
     @Override
@@ -64,6 +75,15 @@ public class TipAdapter extends RecyclerView.Adapter<TipAdapter.ViewHolder> {
         public ViewHolder(View itemView){
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void setOnItemClickListener(final TipRecord element, final OnItemClickListener onItemClickListener) {
+            itemView.setOnClickListener( new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.onItemClick(element);
+                }
+            });
         }
     }
 }
